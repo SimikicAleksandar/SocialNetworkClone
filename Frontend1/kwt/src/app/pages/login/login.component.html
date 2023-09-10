@@ -1,1 +1,29 @@
-<p>login works!</p>
+<div class="card">
+    <div class="card-body">
+      <form class="p-5" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <label for="usernameField">Username</label>
+        <input class="form-control" style="max-width:200px" id="usernameField" formControlName="username"
+               type="text" autocomplete="username"/>
+        <div *ngIf="loginForm.invalid && (loginForm.dirty || loginForm.touched)">
+          <div class="text-danger fw-bold" *ngIf="usernameHasErrorRequired()">*Username is required.</div>
+          <div class="text-danger fw-bold" *ngIf="usernameHasErrorMinLength()">*Username has to be at
+            least {{USERNAME_LENGTH}} characters long.
+          </div>
+        </div>
+        <label for="passwordField">Password</label>
+        <input id="passwordField" class="form-control" style="max-width:200px" formControlName="password"
+               type="password" autocomplete="current-password"/>
+        <div *ngIf="loginForm.invalid && (loginForm.dirty || loginForm.touched)">
+          <div class="text-danger fw-bold" *ngIf="passwordHasErrorRequired()">*Password is required.</div>
+          <div class="text-danger fw-bold" *ngIf="passwordHasErrorMinLength()">*Password has to be at
+            least {{PASSWORD_LENGTH}} characters long.
+          </div>
+        </div>
+        <p>Not a member?<a routerLink="/auth/register">Register here!</a></p>
+        <input class="btn btn-primary mt-2" type="submit" value="Submit"/>
+      </form>
+      <div class="text-danger fw-bold" *ngIf="errorMessage">{{errorMessage}}</div>
+  
+    </div>
+  </div>
+  

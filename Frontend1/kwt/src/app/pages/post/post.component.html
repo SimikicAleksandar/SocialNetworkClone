@@ -1,1 +1,57 @@
-<p>post works!</p>
+<div class="post-card">
+    <div class="post-header">
+      <h2>New post</h2>
+    </div>
+    <div class="post-content">
+      <textarea [(ngModel)]="newPostContent" placeholder="Create post"></textarea>
+    </div>
+    <div class="post-actions">
+      <select [(ngModel)]="selectedGroup">
+        <option value="">Public</option>
+        <option *ngFor="let group of groups" [value]="group.id">{{ group.name }}</option>
+      </select>
+      <button (click)="createPost()">Create</button>
+    </div>
+  </div>
+  <div *ngFor="let post of posts" class="post">
+    <h2>{{ post.createdBy?.displayName ? post.createdBy?.displayName : post.createdBy?.username}}</h2>
+    <p *ngIf="post.containedBy">Private {{ getGroupName(post.containedBy) }}</p>
+    <p *ngIf="!post.containedBy">Public</p>
+    <p>{{ post.createdAt }}</p>
+    <ng-container *ngIf="!post.isEditing && !post.isUpdating && post.createdBy?.username === currentUser?.sub">
+      <button id="btnEdit" (click)="startEditPost(post)">Edit</button>
+      <button id="btnDelete" (click)="deletePost(post.id)">Delete</button>
+    </ng-container>
+    <ng-container *ngIf="post.isEditing && !post.isUpdating">
+      <button id="btnCancel" (click)="cancelEditPost(post)">Cancel</button>
+      <button id="btnConfirm" (click)="updatePost(post.id, post)">Confirm</button>
+    </ng-container>
+    <div class="post-content">
+      <h4 id="content" *ngIf="!post.isEditing">{{ post.content }}</h4>
+      <textarea id="editText" *ngIf="post.isEditing" [(ngModel)]="post.updatedContent"></textarea>
+    </div>
+    <button (click)="toggleComments(post)">View Comments <i class="fa fa-arrow-down" aria-hidden="true"></i></button>
+    <div class="comment-card" *ngIf="post.showComments">
+      <div class="comment" *ngFor="let comment of post.comments">
+        <h4>{{ comment.writtenBy?.username }}</h4>
+        <ng-container *ngIf="!comment.isEditing">
+          <p>{{ comment.text }}</p>
+        </ng-container>
+        <span>{{comment.createdAt}}</span>
+        <ng-container *ngIf="comment.isEditing">
+          <textarea id="editComment" [(ngModel)]="comment.updatedText"></textarea>
+          <button class="buttonComment" (click)="updateComment(post, comment.id, comment)">Save</button>
+          <button class="buttonComment" (click)="cancelEditComment(comment)">Cancel</button>
+        </ng-container>
+        <button class="buttonComment" *ngIf="!comment.isEditing && comment.writtenBy?.username === currentUser?.sub"
+          (click)="editComment(comment)">Edit</button>
+        <button class="buttonComment" *ngIf="!comment.isEditing && comment.writtenBy?.username === currentUser?.sub"
+          (click)="deleteComment(post, comment.id)">Delete</button>
+        <hr>
+      </div>
+      <form (submit)="addComment(post.id, commentInput)">
+        <input id="commentInput" type="text" placeholder="Write comment" name="commentInput" [(ngModel)]="commentInput">
+        <button id="btnAddComment" type="submit">Add Comment</button>
+      </form>
+    </div>
+  </div>

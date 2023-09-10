@@ -1,1 +1,43 @@
-<p>group works!</p>
+<div *ngIf="loggedIn">
+    <div class="group-card">
+      <div class="group-header">
+        <h2>New group</h2>
+      </div>
+      <div class="group-content">
+        <input class="group-input" type="text" [(ngModel)]="newGroupName" placeholder="Write group name">
+      </div>
+      <div class="group-content">
+        <textarea class="group-textarea" [(ngModel)]="newGroupDescription" placeholder="Write description"></textarea>
+      </div>
+      <div class="group-actions">
+        <button class="group-button" (click)="createGroup()">Create</button>
+      </div>
+    </div>
+  
+    <div *ngFor="let group of groups" class="group">
+      <div class="group-header">
+        <h2>Group name: {{ group.name }}</h2>
+        <h6>Description: {{ group.description }}</h6>
+        <p>Created By: {{ group.createdBy?.displayName ? group.createdBy?.displayName : group.createdBy?.username }}</p>
+        <div *ngIf="group.createdBy?.username === currentUser?.sub">
+          <button class="delete-button" (click)="deleteGroup(group.id!)">Delete</button>
+          <button class="update-button" (click)="showEditForm(group)">Update</button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Update Group Form -->
+    <div *ngIf="showEditFormFlag" class="update-group-form">
+      <h2>Update Group</h2>
+      <div class="group-content">
+        <input class="group-input" type="text" [(ngModel)]="editGroupName" placeholder="Write group name">
+      </div>
+      <div class="group-content">
+        <textarea class="group-textarea" [(ngModel)]="editGroupDescription" placeholder="Write description"></textarea>
+      </div>
+      <div class="group-actions">
+        <button class="group-button" (click)="updateGroup()">Save</button>
+        <button class="group-button" (click)="cancelEdit()">Cancel</button>
+      </div>
+    </div>
+  </div>

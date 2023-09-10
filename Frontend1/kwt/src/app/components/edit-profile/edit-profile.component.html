@@ -1,1 +1,14 @@
-<p>edit-profile works!</p>
+<div class="card">
+    <div class="card-body">
+      <form class="p-5" [formGroup]="editProfileForm" (ngSubmit)="onSubmit()">
+        <label for="displayNameField">Display name</label>
+        <input id="displayNameField" class="form-control" style="max-width:200px" type="text"
+               formControlName="displayName" required/>
+        <label for="descriptionField">Description</label>
+        <input id="descriptionField" class="form-control" style="max-width:200px" type="text"
+               formControlName="description" required/>
+  
+        <input class="btn btn-primary mt-2" type="submit" value="Submit"/>
+      </form>
+    </div>
+  </div>

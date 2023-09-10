@@ -1,1 +1,4 @@
-<p>home works!</p>
+<div *ngIf="!loggedIn">
+    <h4>Welcome</h4>
+  </div>
+<app-post *ngIf="loggedIn"></app-post>
