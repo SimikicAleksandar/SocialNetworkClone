@@ -5,17 +5,24 @@ import com.example.swt_kwt_aleksandar_simikic.Model.Post;
 import com.example.swt_kwt_aleksandar_simikic.Model.User;
 import com.example.swt_kwt_aleksandar_simikic.Repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CommentService {
+
     private final CommentRepository commentRepository;
     private final PostService postService;
+
     public Comment addCommentToPost(Long postId, Comment comment, User user){
         Post post = postService.findPostById(postId);
         comment.setBelongsTo(post);
@@ -35,7 +42,8 @@ public class CommentService {
     public Comment updateComment(Long id, Comment updateComment){
         Comment comment = findCommentById(id);
         comment.setText(updateComment.getText());
-        comment.setCreatedAt(LocalDateTime.now());
+        comment.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
+
         return commentRepository.save(comment);
     }
 

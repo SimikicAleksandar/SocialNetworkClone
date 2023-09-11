@@ -1,5 +1,4 @@
 package com.example.swt_kwt_aleksandar_simikic.Service;
-
 import com.example.swt_kwt_aleksandar_simikic.Dto.CreateUserDto;
 import com.example.swt_kwt_aleksandar_simikic.Dto.LoginUserDot;
 import com.example.swt_kwt_aleksandar_simikic.Model.Role;
@@ -19,8 +18,8 @@ import java.util.Optional;
 public class AuthenticationService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
+    private final PasswordEncoder passwordEncoder;
 
     public ResponseEntity<?> registerUser(CreateUserDto createUserDto) {
 
@@ -72,10 +71,9 @@ public class AuthenticationService {
             user.setLastLogin(LocalDateTime.now());
             userRepository.save(user);
 
-            return new ResponseEntity<>("Login successful !", HttpStatus.OK);
+            return new ResponseEntity<>("Login successfull !", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Invalid password !", HttpStatus.NOT_FOUND);
         }
     }
-
 }

@@ -1,3 +1,4 @@
+/*
 package com.example.swt_kwt_aleksandar_simikic.ConfigurationTest;
 
 import org.springframework.context.annotation.Bean;
@@ -39,3 +40,4 @@ public class CorsConfig {
         return filter;
     }
 }
+*/

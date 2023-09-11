@@ -14,10 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Primary
 //Primary je neophodno da bi naglasili Spring Boot-u da zelimo bas ovaj UserDetailService kada budemo koristili
 //Autowired pri konfiguraciji security-a
+@Primary
 public class UserDetailsServiceImpl implements UserDetailsService {
+
     @Autowired
     private UserService userService;
 

@@ -8,11 +8,15 @@ import com.example.swt_kwt_aleksandar_simikic.Repository.GroupRepository;
 import com.example.swt_kwt_aleksandar_simikic.Repository.PostRepository;
 import com.example.swt_kwt_aleksandar_simikic.Repository.UserGroupRepository;
 import com.example.swt_kwt_aleksandar_simikic.Model.*;
+
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +25,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class GroupService {
+
     private final UserService userService;
     private final GroupRepository groupRepository;
     private final UserGroupRepository userGroupRepository;
@@ -29,14 +34,15 @@ public class GroupService {
 
     public ResponseEntity<?> createGroup(CreateGroupDto createGroupDto, User user){
         if(createGroupDto.getName() == null || createGroupDto.getName().isEmpty()){
-            return new ResponseEntity<>("Name cannot be empty", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Name must not be empty", HttpStatus.BAD_REQUEST);
         }
+
         Group group = new Group();
 
-        group.setCreatorGroup(user);
+        group.setCreatedBy(user);
         group.setName(createGroupDto.getName());
         group.setDescription(createGroupDto.getDescription());
-        group.setCreatedAt(LocalDateTime.now());
+        group.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         group = groupRepository.save(group);
 
         UserGroup userGroup = new UserGroup(user, group);
@@ -49,7 +55,7 @@ public class GroupService {
         Optional<Group> optionalGroup = groupRepository.findById(id);
 
         if(optionalGroup.isEmpty()){
-            return new ResponseEntity<>("Group with the given ID does not exist", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Group with given ID does not exist", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(optionalGroup.get(), HttpStatus.OK);
     }
@@ -61,7 +67,7 @@ public class GroupService {
         }
         List<UserGroup> userGroups = userGroupRepository.findByUserId(userId);
         if(userGroups.isEmpty()){
-            return new ResponseEntity<>("The given user is not a member of any group", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Given User is not a member of any group", HttpStatus.NOT_FOUND);
         }
 
         List<Group> groups = new ArrayList<>();
@@ -168,5 +174,4 @@ public class GroupService {
         allGroups = groupRepository.findAll();
         return new ResponseEntity<>(allGroups, HttpStatus.OK);
     }
-
 }

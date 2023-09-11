@@ -1,5 +1,6 @@
 package com.example.swt_kwt_aleksandar_simikic.Service;
 
+
 import com.example.swt_kwt_aleksandar_simikic.Dto.CreatePostDto;
 import com.example.swt_kwt_aleksandar_simikic.Model.Comment;
 import com.example.swt_kwt_aleksandar_simikic.Model.Group;
@@ -10,15 +11,18 @@ import com.example.swt_kwt_aleksandar_simikic.Repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class PostService {
+
     private final PostRepository postRepository;
     private final GroupService groupService;
     private final UserService userService;
@@ -110,6 +114,4 @@ public class PostService {
         allPosts = postRepository.findAll();
         return new ResponseEntity<>(allPosts, HttpStatus.OK);
     }
-
-
 }
